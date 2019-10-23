@@ -16,14 +16,15 @@ class myWin(QWidget):
         self.lbl = QLabel(self)
         self.lbl.setText("1. 기간 :")
         self.lbl.move(0,0)
-        self.lbl.resize(45,20)
+        self.lbl.resize(70,20)
 
         self.tiEdit = QLineEdit("",self)
-        self.tiEdit.move(50,0)
+        self.tiEdit.move(75,0)
         self.tiEdit.resize(45,20)
+        self.tiEdit.returnPressed.connect(self.setTi)
 
         self.opcb = QComboBox(self)
-        self.opcb.move(100,0)
+        self.opcb.move(125,0)
         self.opcb.addItem("Month")
         self.opcb.addItem("Year")
         self.opcb.currentIndexChanged.connect(self.setTime)
@@ -41,6 +42,9 @@ class myWin(QWidget):
 
     def setTime(self):
         self.time = self.opcb.currentText()
+
+    def setTi(self):
+        self.Ti = int(self.tiEdit.text())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
