@@ -9,23 +9,24 @@ class myWin(QWidget):
 
     def initUI(self):
         self.time = "Month"
+        self.result = 0
         self.setWindowTitle('이자율 계산기')
         self.move(300,300)
         self.resize(400,200)
 
         #####기간 선택하기 (월/년)
         self.lbl = QLabel(self)
-        self.lbl.setText("1.  기간 :")
+        self.lbl.setText("1.   기간 :")
         self.lbl.move(0,0)
         self.lbl.resize(70,20)
 
         self.tiEdit = QLineEdit("",self)
-        self.tiEdit.move(75,0)
-        self.tiEdit.resize(45,20)
+        self.tiEdit.move(85,0)
+        self.tiEdit.resize(55,20)
         self.tiEdit.textChanged.connect(self.setTi)
 
         self.opcb = QComboBox(self)
-        self.opcb.move(125,0)
+        self.opcb.move(145,0)
         self.opcb.addItem("Month")
         self.opcb.addItem("Year")
         self.opcb.currentIndexChanged.connect(self.setTime)
@@ -38,13 +39,29 @@ class myWin(QWidget):
 
         self.tiEdit2 = QLineEdit("",self)
         self.tiEdit2.move(85,25)
-        self.tiEdit2.resize(45,20)
+        self.tiEdit2.resize(55,20)
         self.tiEdit2.textChanged.connect(self.setInterestRate)
 
         self.lbl2_2 = QLabel(self)
         self.lbl2_2.setText("%")
-        self.lbl2_2.move(135,25)
+        self.lbl2_2.move(145,25)
         self.lbl2_2.resize(80,20)
+
+        #####월 납입액
+        self.lbl3 = QLabel(self)
+        self.lbl3.setText("3. 납입액 :")
+        self.lbl3.move(0,50)
+        self.lbl3.resize(80,20)
+
+        self.tiEdit3 = QLineEdit("",self)
+        self.tiEdit3.move(85,50)
+        self.tiEdit3.resize(55,20)
+        self.tiEdit3.textChanged.connect(self.setMoney)
+
+        self.lbl3_2 = QLabel(self)
+        self.lbl3_2.setText("원")
+        self.lbl3_2.move(145,50)
+        self.lbl3_2.resize(80,20)
 
         exbtn1 = QPushButton("닫기", self)
         exbtn1.move(190, 150)
@@ -65,8 +82,28 @@ class myWin(QWidget):
     def setInterestRate(self):
         self.interestRate = int(self.tiEdit2.text())
 
+    def setMoney(self):
+        self.money = int(self.tiEdit3.text())
+
+    def showResult(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("원금 및 이자")
+        message = "만기시 : {0} 원".format(int(self.result))
+        msg.setText(message)
+
+        x = msg.exec_()
+
     def calc(self):
-        print(self.interestRate, self.time, self.Ti)
+        if self.time == "Month":
+            interestRate = self.interestRate / 1200
+            self.result = self.money * self.Ti  + self.money * interestRate * ((self.Ti + 1) * self.Ti / 2)
+            self.showResult()
+        else:
+            Ti = self.Ti * 12
+            interestRate = self.interestRate / 1200
+            self.result = self.money * Ti  + self.money * interestRate * ((Ti + 1) * Ti / 2)
+            self.showResult()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
