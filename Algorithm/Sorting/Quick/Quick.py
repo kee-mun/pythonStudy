@@ -7,8 +7,25 @@
 # 최선 O(n Log(n)) 최악 O(n^2) 평균 O(n log(n))의 복잡도를 가진다.
 
 def quicksorted(arr):
-    pass
+    if len(arr) > 1:
+        pivot = arr[(len(arr)-1)//2]
+        left, mid, right = [],[],[]
+        for i in range(len(arr)):
+            if arr[i] > pivot:
+                right.append(arr[i])
+            elif arr[i] < pivot:
+                left.append(arr[i])
+            else:
+                mid.append(arr[i])
+        return quicksorted(left) + mid + quicksorted(right)
+    else:
+        return arr
 
 
-arr = [1,2,5,4,3,8,7,5]
-print(quicksorted(arr))
+unsortedList = [1,2,5,4,3,8,7,5]
+sortedList = [1,2,3,4,5,5,7,8]
+
+if quicksorted(unsortedList) == sortedList:
+    print("정답!")
+else:
+    print("오답!")
